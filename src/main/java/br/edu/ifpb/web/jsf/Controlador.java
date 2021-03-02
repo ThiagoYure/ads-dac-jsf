@@ -4,6 +4,7 @@ package br.edu.ifpb.web.jsf;
 //import javax.faces.bean.RequestScoped;
 import br.edu.ifpb.domain.Dependente;
 import br.edu.ifpb.domain.Pessoa;
+import br.edu.ifpb.domain.CPF;
 import br.edu.ifpb.domain.Pessoas;
 import br.edu.ifpb.domain.service.AlteraNomeDasPessoas;
 import br.edu.ifpb.infra.persistence.memory.PessoasEmMemoria;
@@ -24,6 +25,8 @@ import javax.inject.Named;
 public class Controlador implements Serializable {
 
     private Pessoa pessoa = new Pessoa("");
+    private Pessoa pessoaPesquisada = new Pessoa();
+    private CPF cpfPesquisado = new CPF();
     private Dependente dependente = new Dependente();
 
     private AlteraNomeDasPessoas service = new AlteraNomeDasPessoas();
@@ -55,6 +58,7 @@ public class Controlador implements Serializable {
     }
     public String excluir(Pessoa pessoa){
         this.pessoas.excluir(pessoa);
+        pessoaPesquisada = new Pessoa();
         return null;
     }
     public String editar(Pessoa pessoa){
@@ -76,6 +80,13 @@ public class Controlador implements Serializable {
         return this.pessoas.todas();
     }
 
+    public Pessoa pessoaPorCpf(){
+        pessoaPesquisada.setCpf(cpfPesquisado);
+        pessoaPesquisada = pessoas.localizarPorCPF(pessoaPesquisada.getCpf());
+        System.out.println("Pessoa" + pessoaPesquisada.toString());
+        return pessoaPesquisada;
+    }
+
     public Pessoa getPessoa() {
         return pessoa;
     }
@@ -90,5 +101,19 @@ public class Controlador implements Serializable {
 
     public void setDependente(Dependente dependente) {
         this.dependente = dependente;
+    }
+
+    public Pessoa getPessoaPesquisada(){return pessoaPesquisada;}
+
+    public void setPessoaPesquisada(Pessoa pessoaPesquisada) {
+        this.pessoaPesquisada = pessoaPesquisada;
+    }
+
+    public CPF getCpfPesquisado() {
+        return cpfPesquisado;
+    }
+
+    public void setCpfPesquisado(CPF cpfPesquisado) {
+        this.cpfPesquisado = cpfPesquisado;
     }
 }

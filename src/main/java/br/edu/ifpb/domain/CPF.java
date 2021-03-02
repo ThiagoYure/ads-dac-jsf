@@ -1,5 +1,7 @@
 package br.edu.ifpb.domain;
 
+import java.util.Objects;
+
 public class CPF {
 
     // 11122233344
@@ -30,5 +32,30 @@ public class CPF {
 
     public String valor() {
         return this.numero;
+    }
+
+    public static int getTAMANHO() {
+        return TAMANHO;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CPF cpf = (CPF) o;
+        return Objects.equals(numero, cpf.numero);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numero);
     }
 }

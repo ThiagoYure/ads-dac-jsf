@@ -9,7 +9,8 @@
     <ui:define name="centro">
         <h1 class="header center orange-text">Listagem de Pessoas</h1>
         <h:form>
-            <h:commandLink value="nova" action="edit.xhtml?faces-redirect=true"/>
+            <h:commandLink styleClass="btn" value="nova" action="edit.xhtml?faces-redirect=true"/>
+            <h:commandLink styleClass="btn" value="pesquisar" action="buscaPessoaCpf.xhtml?faces-redirect=true"/>
             <h:dataTable var="pessoa" value="#{controlador.todasAsPessoas()}" class="striped highlight">
                 <h:column>
                     <f:facet name="header">Id</f:facet>

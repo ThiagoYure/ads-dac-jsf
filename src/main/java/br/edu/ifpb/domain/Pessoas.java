@@ -25,4 +25,6 @@ public interface Pessoas extends Serializable {
     public Dependente localizarDependenteComId(String uuid);
 
     public void novo(Dependente dependente);
+
+    public Pessoa localizarPorCPF(CPF cpf);
 }

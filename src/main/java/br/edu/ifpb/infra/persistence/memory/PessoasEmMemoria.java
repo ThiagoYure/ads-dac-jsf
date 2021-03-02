@@ -1,5 +1,6 @@
 package br.edu.ifpb.infra.persistence.memory;
 
+import br.edu.ifpb.domain.CPF;
 import br.edu.ifpb.domain.Dependente;
 import br.edu.ifpb.domain.Pessoa;
 import br.edu.ifpb.domain.Pessoas;
@@ -93,6 +94,22 @@ public class PessoasEmMemoria implements Pessoas {
     @Override
     public void novo(Dependente dependente) {
         this.dependentes.add(dependente);
+    }
+
+    @Override
+    public Pessoa localizarPorCPF(CPF cpf) {
+        Pessoa pessoaNova = new Pessoa("");
+        List<Pessoa> pessoasNovas = todas();
+        for (Pessoa p:pessoasNovas) {
+            System.out.println("cpf buscado:" + cpf.formatado());
+            System.out.println("cpf comparado:" + p.getCpf().formatado());
+            if(p.getCpf().equals(cpf)){
+                pessoaNova = p;
+                continue;
+            }
+        }
+        System.out.println("Pessoa Nova Localizada: " + pessoaNova.getCpf().formatado());
+        return pessoaNova;
     }
 
 }

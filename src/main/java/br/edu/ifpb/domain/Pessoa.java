@@ -16,6 +16,9 @@ public class Pessoa {
     private CPF cpf;
     private Dependente dependente;
 
+    public Pessoa() {
+    }
+
     public Pessoa(String nome) {
         this(nome, "11111111111");
     }
@@ -57,4 +60,13 @@ public class Pessoa {
         return id;
     }
 
+    @Override
+    public String toString() {
+        return "Pessoa{" +
+                "nome='" + nome + '\'' +
+                ", id=" + id +
+                ", cpf=" + cpf +
+                ", dependente=" + dependente +
+                '}';
+    }
 }
