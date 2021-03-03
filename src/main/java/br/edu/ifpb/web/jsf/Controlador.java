@@ -2,13 +2,12 @@ package br.edu.ifpb.web.jsf;
 
 //import javax.faces.bean.ManagedBean;
 //import javax.faces.bean.RequestScoped;
-import br.edu.ifpb.domain.Dependente;
-import br.edu.ifpb.domain.Pessoa;
-import br.edu.ifpb.domain.CPF;
-import br.edu.ifpb.domain.Pessoas;
+import br.edu.ifpb.domain.*;
 import br.edu.ifpb.domain.service.AlteraNomeDasPessoas;
+import br.edu.ifpb.infra.persistence.memory.PessoasEmJDBC;
 import br.edu.ifpb.infra.persistence.memory.PessoasEmMemoria;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -24,14 +23,15 @@ import javax.inject.Named;
 @SessionScoped
 public class Controlador implements Serializable {
 
-    private Pessoa pessoa = new Pessoa("");
+    private Pessoa pessoa = new Pessoa();
     private Pessoa pessoaPesquisada = new Pessoa();
     private CPF cpfPesquisado = new CPF();
     private Dependente dependente = new Dependente();
 
     private AlteraNomeDasPessoas service = new AlteraNomeDasPessoas();
 
-    private Pessoas pessoas = new PessoasEmMemoria();
+    /*private Pessoas pessoas = new PessoasEmMemoria();*/
+    private PessoasJDBC pessoas = new PessoasEmJDBC();
 
     public String redirecionar() {
         // executando a lógica de negócio
@@ -45,19 +45,32 @@ public class Controlador implements Serializable {
 
     public String adicionar() {
         // deveríamos ter um objeto responsável por encapsular essa regra de negócio
-        Pessoa retorno = this.pessoas.localizarPessoaComId(
-                this.pessoa.getId()
-        );
-        if(Pessoa.fake().equals(retorno)){
-            this.pessoas.nova(this.pessoa);
-        }else{
-            this.pessoas.atualizar(this.pessoa);
+        Pessoa retorno = null;
+        try {
+            retorno = this.pessoas.localizarPessoaComId(
+                    this.pessoa.getId()
+            );
+            if(retorno == null){
+                this.pessoas.nova(this.pessoa);
+            }else{
+                this.pessoas.atualizar(this.pessoa);
+            }
+            this.pessoa = new Pessoa();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
-        this.pessoa = new Pessoa("");
         return null;
     }
     public String excluir(Pessoa pessoa){
-        this.pessoas.excluir(pessoa);
+        try {
+            this.pessoas.excluir(pessoa);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         pessoaPesquisada = new Pessoa();
         return null;
     }
@@ -67,24 +80,51 @@ public class Controlador implements Serializable {
     }
 
     public String adicionarDependente() {
-        this.pessoas.novo(dependente);
+        try {
+            this.pessoas.novo(dependente);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         this.dependente = new Dependente();
         return null;
     }
 
 
     public List<Dependente> todosOsDependentes(){
-        return this.pessoas.todosOsDepentendes();
+        try {
+            return this.pessoas.todosOsDepentendes();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     public List<Pessoa> todasAsPessoas() {
-        return this.pessoas.todas();
+        try {
+            return this.pessoas.todas();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Pessoa pessoaPorCpf(){
         pessoaPesquisada.setCpf(cpfPesquisado);
-        pessoaPesquisada = pessoas.localizarPorCPF(pessoaPesquisada.getCpf());
+        try {
+            pessoaPesquisada = pessoas.localizarPorCPF(pessoaPesquisada.getCpf());
+            return pessoaPesquisada;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         System.out.println("Pessoa" + pessoaPesquisada.toString());
-        return pessoaPesquisada;
+        return null;
     }
 
     public Pessoa getPessoa() {
