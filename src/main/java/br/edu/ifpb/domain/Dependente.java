@@ -107,4 +107,13 @@ public class Dependente {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Dependente{" +
+                "uuid='" + uuid + '\'' +
+                ", nome='" + nome + '\'' +
+                ", dataDeNascimento=" + dataDeNascimento +
+                '}';
+    }
 }

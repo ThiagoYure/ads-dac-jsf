@@ -55,12 +55,12 @@ public class Controlador implements Serializable {
             }else{
                 this.pessoas.atualizar(this.pessoa);
             }
-            this.pessoa = new Pessoa();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        this.pessoa = new Pessoa();
         return null;
     }
     public String excluir(Pessoa pessoa){
@@ -72,6 +72,7 @@ public class Controlador implements Serializable {
             e.printStackTrace();
         }
         pessoaPesquisada = new Pessoa();
+        this.pessoa = new Pessoa();
         return null;
     }
     public String editar(Pessoa pessoa){
@@ -116,14 +117,17 @@ public class Controlador implements Serializable {
     public Pessoa pessoaPorCpf(){
         pessoaPesquisada.setCpf(cpfPesquisado);
         try {
-            pessoaPesquisada = pessoas.localizarPorCPF(pessoaPesquisada.getCpf());
-            return pessoaPesquisada;
+            Pessoa p = pessoas.localizarPorCPF(pessoaPesquisada.getCpf());
+            if(p != null){
+                pessoaPesquisada = p;
+                return pessoaPesquisada;
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println("Pessoa" + pessoaPesquisada.toString());
+        pessoaPesquisada = new Pessoa();
         return null;
     }
 

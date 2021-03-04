@@ -20,7 +20,7 @@ public class PessoasEmJDBC implements PessoasJDBC {
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1,pessoa.getNome());
         stmt.setString(2,pessoa.getCpf().getNumero());
-        stmt.setString(3,pessoa.getDependente().getUuid());
+        stmt.setInt(3,Integer.parseInt(pessoa.getDependente().getUuid()));
 
         stmt.executeUpdate();
         conn.close();
@@ -35,6 +35,7 @@ public class PessoasEmJDBC implements PessoasJDBC {
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             Pessoa pessoa = new Pessoa();
+            pessoa.setId((rs.getInt("id")));
             pessoa.setNome(rs.getString("nome"));
             pessoa.setCpf(new CPF(rs.getString("cpf")));
             pessoa.setDependente(localizarDependenteComId(rs.getInt("idDependente")));

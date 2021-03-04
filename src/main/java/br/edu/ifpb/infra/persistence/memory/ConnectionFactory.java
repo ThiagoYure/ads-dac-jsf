@@ -11,7 +11,7 @@ public class ConnectionFactory {
 
         String url = "jdbc:postgresql://localhost:5432/dac-ifpb-jsf";
         String usuario = "postgres";
-        String senha = "1234";
+        String senha = "senha";
 
         return DriverManager.getConnection(url, usuario, senha);
 

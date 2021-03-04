@@ -9,6 +9,9 @@
     <ui:define name="centro">
         <h1 class="header center orange-text">Pesquisa de Pessoa por CPF</h1>
         <h:form>
+            <h:commandLink styleClass="btn" value="nova" action="edit.xhtml"/>
+            <h:commandLink styleClass="btn" value="Listar Pessoas" action="list.xhtml"/>
+            <br></br>
             <h:outputLabel for="cpf" value="CPF" />
             <h:inputText value="#{controlador.cpfPesquisado}"
                          converter="converter.cpf"
